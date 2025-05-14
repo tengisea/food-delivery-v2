@@ -5,11 +5,13 @@ import { authRouter } from "./routers";
 
 const app = express();
 
-configDotenv()
-connectDatabase()
+configDotenv();
+connectDatabase();
 
 const port = 8000;
 
-app.get("/auth", authRouter)
+app.use(express.json());
 
-app.listen(port, () => console.log(`https://localhost:${port}`));
+app.use("/auth", authRouter);
+
+app.listen(port, () => console.log(`http://localhost:${port}`));

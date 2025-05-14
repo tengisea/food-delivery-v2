@@ -17,14 +17,14 @@ type UserSchemaType = {
 };
 
 const UserSchema = new Schema<UserSchemaType>({
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   address: { type: String, default: "" },
   isVerified: { type: Boolean, default: false },
   orderedFoods: {
     type: Schema.Types.ObjectId,
     ref: "FoodOrder",
-    required: true,
+    required: false,
   },
   phoneNumber: { type: String, default: "" },
   role: {
@@ -32,7 +32,8 @@ const UserSchema = new Schema<UserSchemaType>({
     enum: Object.values(UserRoleEnum),
     default: UserRoleEnum.USER,
   },
-  ttl: {type: Date, default: Date.now() + 24 * 60 * 60 * 1000}
+  ttl: { type: Date, default: Date.now() + 24 * 60 * 60 * 1000 },
 });
 
-export const UserModel:Model<UserSchemaType> = models["User"] || model("User", UserSchema)
+export const UserModel: Model<UserSchemaType> =
+  models["User"] || model("User", UserSchema);
