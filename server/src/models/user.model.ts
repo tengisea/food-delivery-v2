@@ -33,7 +33,7 @@ const UserSchema = new Schema<UserSchemaType>({
     default: UserRoleEnum.USER,
   },
   ttl: { type: Date, default: Date.now() + 24 * 60 * 60 * 1000 },
-});
+}, {timestamps: true});
 
 export const UserModel: Model<UserSchemaType> =
   models["User"] || model("User", UserSchema);

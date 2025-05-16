@@ -4,7 +4,7 @@ import { generateNewToken, encryptHash, sendUserVerificationLink } from "../../u
 
 type UserBody = { email: string; password: string };
 
-export const signupController = async (req: Request, res: Response) => {
+export const signinController = async (req: Request, res: Response) => {
   const { email, password } = req.body as UserBody;
 
   if (!email || !password) {
@@ -13,10 +13,6 @@ export const signupController = async (req: Request, res: Response) => {
   }
 
   const existingUser = await UserModel.findOne({ email });
-
-  if (existingUser) {
-    res.status(400).send({ message: "User exists" });
-  }
 
   const hashedPassword = encryptHash(password);
 

@@ -4,7 +4,7 @@ import { createTransport } from "nodemailer";
 configDotenv();
 
 const { EMAIL_PASS, EMAIL_USER } = process.env;
-console.log({ EMAIL_PASS, EMAIL_USER });
+
 const transport = createTransport({
   service: "gmail",
   auth: {
@@ -22,9 +22,18 @@ export const sendUserVerificationLink = async (
     to: email,
     from: EMAIL_USER,
     html: `
-        <div>
+      <div>
           <h1>Account Verification</h1>
-          <a href="${baseURL}">Verify</a>
-        </div>`,
+         <div style="display:flex;">
+            <div style="color-white; font-size:22px; font-weight:600;">
+              Nom <div style="color-[#EF4444];">Nom</div>
+           </div>
+         </div>
+           <div style="text-xs;">Swift delivery</div>
+           <div style="font-size:24px; color:red; font-weight:600;">
+             This link is valid for only a hour
+           </div>
+            <a href="${baseURL}">Verify</a>
+      </div>`,
   });
 };
