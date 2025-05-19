@@ -3,25 +3,26 @@ import { FoodCategoryModel } from "../../models";
 
 type FoodCategoryBody = { categoryName: string };
 
-export const foodCategoryController = async (req: Request, res: Response) => {
+export const deleteFoodCategoryController = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { categoryName } = req.body as FoodCategoryBody;
 
     const existingCategory = await FoodCategoryModel.findOne({ categoryName });
 
-    if (existingCategory) {
-      res.status(400).send({ message: "Category exists" });
-      return;
+    if (!existingCategory) {
+      res.status(400).send({ message: "Category doesn't exist" });
     }
 
-    await FoodCategoryModel.create({
+    await FoodCategoryModel.findByIdAndDelete(req.params.foodCategoryId, {
       categoryName,
     });
 
     res.status(201).send({ message: "Success" });
-    return
   } catch (error) {
-    console.error("Error during aadding category:", error);
+    console.error("Error during adding category:", error);
 
     res.status(500).json({
       message: "Internal server error",

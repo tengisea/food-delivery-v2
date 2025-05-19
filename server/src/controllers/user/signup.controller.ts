@@ -12,11 +12,7 @@ export const signupController = async (req: Request, res: Response) => {
     return;
   }
 
-  const existingUser = await UserModel.findOne({ email });
-
-  if (existingUser) {
-    res.status(400).send({ message: "User exists" });
-  }
+  
 
   const hashedPassword = encryptHash(password);
 

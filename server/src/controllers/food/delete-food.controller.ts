@@ -9,16 +9,15 @@ type FoodBody = {
   category: string;
 };
 
-export const foodController = async (req: Request, res: Response) => {
+export const deleteFoodController = async (req: Request, res: Response) => {
   try {
     const body = req.body as FoodBody;
 
-    await FoodModel.create(body);
+    await FoodModel.findByIdAndDelete(req.params.foodId,{body});
 
     res.status(201).send({ message: "Success" });
-    
   } catch (error) {
-    console.error("Error during aadding category:", error);
+    console.error("Error during adding category:", error);
 
     res.status(500).json({
       message: "Internal server error",

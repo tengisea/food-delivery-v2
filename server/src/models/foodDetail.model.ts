@@ -10,7 +10,7 @@ type FoodSchemaType = {
 
 const FoodSchema = new Schema<FoodSchemaType>(
   {
-    foodName: { type: String, required: true },
+    foodName: { type: String, required: true, unique: true },
     price: { type: Number, required: true },
     image: { type: String, required: true },
     ingredients: { type: String, required: true },

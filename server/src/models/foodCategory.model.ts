@@ -6,7 +6,7 @@ type FoodCategorySchemaType = {
 
 const FoodCategorySchema = new Schema<FoodCategorySchemaType>(
   {
-    categoryName: { type: String, required: true, unique: true, ref: "Category" },
+    categoryName: { type: String, required: true, unique: true },
   },
   { timestamps: true }
 );
