@@ -1,10 +1,18 @@
 import { Router } from "express";
-import { signinController, signupController, verifyUserController } from "../controllers/user";
-import { resetPasswordController } from "../controllers/user/reset-password-request.controller";
+import {
+  requestResetPasswordController,
+  signinController,
+  signupController,
+  verifyPasswordUserController,
+  verifyUserController,
+  resetPasswordController,
+} from "../controllers/user";
 
-export const authRouter= Router()
+export const authRouter = Router();
 
+authRouter.post("/sign-in", signinController);
 authRouter.post("/sign-up", signupController);
-authRouter.get("/verify-user", verifyUserController)
-authRouter.post("/sign-in", signinController)
-authRouter.post("/reset-password-request", resetPasswordController)
+authRouter.get("/verify-user", verifyUserController);
+authRouter.post("/reset-password-request", requestResetPasswordController);
+authRouter.get("/verify-reset-password-request", verifyPasswordUserController);
+authRouter.post("/reset-password", resetPasswordController);

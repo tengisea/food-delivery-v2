@@ -1,9 +1,35 @@
 import { Router } from "express";
-import { foodOrderController, userFoodOrderController, patchFoodOrderController } from "../controllers";
-
+import {
+  foodOrderController,
+  adminFoodOrderController,
+  updateFoodOrderController,
+  getAllOrdersController,
+} from "../controllers";
+import { authenticateUser, authorization } from "../middlewares";
+import { UserRoleEnum } from "../models";
 
 export const foodOrderRouter = Router();
 
-foodOrderRouter.route("/").post(foodOrderController).get(foodOrderController);
-foodOrderRouter.get("/6826b1529f625b1668729229", userFoodOrderController);
-foodOrderRouter.patch("/6826b6d82400d456fdb1cf84", patchFoodOrderController);
+foodOrderRouter.route("/").post(foodOrderController)
+
+foodOrderRouter
+  .route("/")
+  .get(
+    authenticateUser,
+    authorization(UserRoleEnum.ADMIN),
+    getAllOrdersController
+  );
+
+foodOrderRouter.get(
+  "/:userId",
+  authenticateUser,
+  authorization(UserRoleEnum.ADMIN),
+  adminFoodOrderController
+);
+
+foodOrderRouter.patch(
+  "/:foodOrderId",
+  authenticateUser,
+  authorization(UserRoleEnum.ADMIN),
+  updateFoodOrderController
+);

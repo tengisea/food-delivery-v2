@@ -15,7 +15,7 @@ export const updateFoodController = async (req: Request, res: Response) => {
 
     await FoodModel.findByIdAndUpdate(req.params.foodId,{body});
 
-    res.status(201).send({ message: "Success" });
+    res.status(201).send({ message: "Success",body });
   } catch (error) {
     console.error("Error during adding category:", error);
 

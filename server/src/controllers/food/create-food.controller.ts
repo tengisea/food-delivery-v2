@@ -15,10 +15,10 @@ export const foodController = async (req: Request, res: Response) => {
 
     await FoodModel.create(body);
 
-    res.status(201).send({ message: "Success" });
+    res.status(201).send({ message: "Success", body});
     
   } catch (error) {
-    console.error("Error during aadding category:", error);
+    console.error("Error during adding category:", error);
 
     res.status(500).json({
       message: "Internal server error",

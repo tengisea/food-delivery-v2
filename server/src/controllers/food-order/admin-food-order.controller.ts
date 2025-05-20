@@ -3,22 +3,23 @@ import { FoodOrderModelItem } from "../../models";
 
 type FoodOrderBody = {
   user: string;
-  FoodOrderItems: Object;
+  FoodOrderItems: string;
   totalPrice: string;
 };
 
-export const foodOrderController = async (req: Request, res: Response) => {
+export const adminFoodOrderController = async (req: Request, res: Response) => {
 try{
   const { user, FoodOrderItems, totalPrice } = req.body as FoodOrderBody;
 
-  await FoodOrderModelItem.create({
+  await FoodOrderModelItem.findById(req.params.userId, {
     user,
     totalPrice,
     FoodOrderItems,
   });
 
-  res.status(201).send({ message: "Success", user,totalPrice,FoodOrderItems });
-
+  res
+    .status(201)
+    .send({ message: "Success", user, totalPrice, FoodOrderItems });
 } catch (error) {
     console.error("Error during food-order:", error);
 

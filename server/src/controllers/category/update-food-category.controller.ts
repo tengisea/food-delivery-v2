@@ -14,7 +14,7 @@ export const updateFoodCategoryController = async (
       categoryName,
     });
 
-    res.status(201).send({ message: "Success" });
+    res.status(201).send({ message: "Success" , categoryName});
     return;
   } catch (error) {
     console.error("Error during adding category:", error);
