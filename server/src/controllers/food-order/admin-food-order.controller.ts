@@ -8,19 +8,15 @@ type FoodOrderBody = {
 };
 
 export const adminFoodOrderController = async (req: Request, res: Response) => {
-try{
-  const { user, FoodOrderItems, totalPrice } = req.body as FoodOrderBody;
+  try {
+    const { user, FoodOrderItems, totalPrice } = req.body as FoodOrderBody;
 
-  await FoodOrderModelItem.findById(req.params.userId, {
-    user,
-    totalPrice,
-    FoodOrderItems,
-  });
+    await FoodOrderModelItem.findOne({ user: req.params.userId });
 
-  res
-    .status(201)
-    .send({ message: "Success", user, totalPrice, FoodOrderItems });
-} catch (error) {
+    res
+      .status(201)
+      .send({ message: "Success", user, totalPrice, FoodOrderItems });
+  } catch (error) {
     console.error("Error during food-order:", error);
 
     res.status(500).json({

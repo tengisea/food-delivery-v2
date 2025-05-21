@@ -18,7 +18,7 @@ type UserSchemaType = {
 
 const UserSchema = new Schema<UserSchemaType>({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: false },
+  password: { type: String, required: true },
   address: { type: String, default: "" },
   isVerified: { type: Boolean, default: false },
   orderedFoods: {

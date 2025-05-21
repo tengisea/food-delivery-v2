@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models";
-import { generateNewToken} from "../../utils";
+import { generateNewToken, encryptHash } from "../../utils";
 import { compare } from "bcryptjs";
 
 export const signinController = async (req: Request, res: Response) => {
@@ -14,7 +14,7 @@ export const signinController = async (req: Request, res: Response) => {
       return;
     }
 
-    const isPasswordCorrect = compare(password, user.password);
+    const isPasswordCorrect = await compare(password, user.password);
 
     if (!isPasswordCorrect) {
       res.status(400).send({ message: "Email or password is incorrect" });
@@ -29,11 +29,9 @@ export const signinController = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error during sign-in:", error);
 
-    res
-      .status(500)
-      .json({
-        message: "Internal server error",
-        error: error instanceof Error ? error.message : "Unknown Error.",
-      });
+    res.status(500).json({
+      message: "Internal server error",
+      error: error instanceof Error ? error.message : "Unknown Error.",
+    });
   }
 };

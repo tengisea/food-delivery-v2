@@ -17,7 +17,7 @@ export const requestResetPasswordController = async (
     const existingUser = await UserModel.findOne({ email });
 
     if (!existingUser) {
-      res.status(400).send({ message: "Email doesn't exist" });
+      res.status(400).send({ message: "User doesn't exist with this email" });
       return;
     }
 
