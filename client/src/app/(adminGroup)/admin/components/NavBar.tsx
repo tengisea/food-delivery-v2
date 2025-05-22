@@ -3,7 +3,7 @@ import { LayoutDashboard, Settings, Truck } from "lucide-react";
 
 export const NavBar = () => {
   return (
-    <nav className="flex flex-col gap-10 px-5 py-9 w-51">
+    <nav className="flex flex-col gap-10 px-5 py-9 w-51 border-r-1 ">
       <div>
         <NomLogo />
       </div>
