@@ -1,23 +1,33 @@
-"use client"
+"use client";
+
 import useSWR from "swr";
-import { fetcher } from "@/app/hooks/useFetchData";
+import { useRouter } from "next/navigation";
+import { fetcher } from "@/hooks/useFetchData";
 
 export const Orders = () => {
+  const router = useRouter();
+
   const { data, error, isLoading } = useSWR(
     "http://localhost:8000/food-order",
     fetcher
   );
 
   if (isLoading) return <p>Ачааллаж байна...</p>;
-  if (error) return <p>Алдаа: {error.message}</p>;
+
+  if (error) {
+    if (error.message.includes("Token байхгүй")) {
+      router.push("/login");
+    }
+    return <p>Алдаа: {error.message}</p>;
+  }
 
   return (
     <div>
       <h2>Захиалгын жагсаалт:</h2>
       <ul>
-        {data.map((order) => (
-          <li key={order._id}>
-            {order.username} — {order.status}
+        {data?.map((item: any) => (
+          <li key={item._id}>
+            {item.username} — {item.status}
           </li>
         ))}
       </ul>
