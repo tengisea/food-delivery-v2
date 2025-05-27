@@ -15,8 +15,8 @@ foodOrderRouter.route("/").post(foodOrderController)
 foodOrderRouter
   .route("/")
   .get(
-    authenticateUser,
-    authorization(UserRoleEnum.ADMIN),
+    // authenticateUser,
+    // authorization(UserRoleEnum.ADMIN),
     getAllOrdersController
   );
 

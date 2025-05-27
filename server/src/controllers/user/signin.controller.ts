@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserModel } from "../../models";
-import { generateNewToken, encryptHash } from "../../utils";
+import { generateNewToken } from "../../utils";
 import { compare } from "bcryptjs";
 
 export const signinController = async (req: Request, res: Response) => {
