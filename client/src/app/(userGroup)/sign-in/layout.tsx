@@ -1,9 +1,12 @@
 import { UserContextProvider } from "@/providers/UserProvider";
+import { SignInPage} from "@/app/(userGroup)/sign-in/page";
 
-export const layout = () => {
+export const SignInlayout = () => {
   return (
     <UserContextProvider>
-      <div>layout</div>
+      <SignInPage />
     </UserContextProvider>
   );
 };
+
+export default SignInlayout;

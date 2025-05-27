@@ -1,7 +1,15 @@
 "use client";
 import { User } from "lucide-react";
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import axios, { Axios } from "axios";
+import {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+  SetStateAction,
+} from "react";
+import axios from "axios";
 
 type User = {
   email: string;
@@ -10,29 +18,34 @@ type User = {
 
 type UserContextType = {
   user: User;
+  setUser: Dispatch<SetStateAction<User>>;
 };
 
- const UserContext = createContext<UserContextType>(
-  {} as UserContextType
-);
+const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export const UserContextProvider = ({ children }: PropsWithChildren) => {
-  const { user, setUser } = useState<User>({ email: "", password: "" });
+  const [user, setUser] = useState<User>({ email: "", password: "" });
 
-  useEffect(()=> {
-    const token = localStorage.getItem("token")
-
-    if(token) {
-      const refreshToken = await axios(`${process.env.BACKEND}/refresh-user`, { headers: {Authorization: token}})
-      localStorage.setItem("token", refreshToken)
-    }      
-  },[])
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await axios(`${process.env.BACKEND}/refresh-user`, {
+          headers: { Authorization: token },
+        });
+        localStorage.setItem("token", response.data);
+      }
+    };
+    fetchToken();
+  }, []);
 
   return (
     <UserContext.Provider
       value={{
-        user
-      }}>{children}</UserContext.Provider>
+        user,setUser
+      }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 
