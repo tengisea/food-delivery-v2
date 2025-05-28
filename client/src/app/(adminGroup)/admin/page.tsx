@@ -4,8 +4,10 @@ import { FoodImage } from "./components/FoodImage";
 const AdminHomePage = () => {
   return (
     <div className="flex">
-      <NavBar/>
-      <Orders/>
+      <NavBar />
+      <div className="flex-1 p-4 bg-[#F4F4F5]">
+        <Orders />
+      </div>
       {/* <FoodImage/> */}
     </div>
   );
