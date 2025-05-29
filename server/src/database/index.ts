@@ -1,14 +1,22 @@
-import { connect } from "mongoose";
+import dotenv from "dotenv";
+import path from "path";
+import mongoose from "mongoose";
 
-export const connectDatabase = async () => {
-  const dbConnectionString = process.env.MDB_CONNECTION_URL;
+dotenv.config({
+  path: path.resolve(__dirname, "../../.env"),
+});
 
-  if (!dbConnectionString) throw new Error("failed to connect to the MongoDB");
+const connectDatabase = async () => {
+  const url = process.env.MDB_CONNECTION_URL;
+  if (!url) throw new Error("❌ MDB_CONNECTION_URL not found!");
 
   try {
-    await connect(dbConnectionString);
-    console.log("Succeesfully connected to the MongoDB");
-  } catch (error) {
-    console.error(error instanceof Error && error.message);
+    await mongoose.connect(url);
+    console.log("✅ MongoDB connected!");
+  } catch (err) {
+    console.error("❌ Failed to connect to DB:", err);
   }
 };
+
+connectDatabase();
+export { connectDatabase };

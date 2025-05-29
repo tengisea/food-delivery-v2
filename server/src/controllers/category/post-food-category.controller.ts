@@ -10,7 +10,7 @@ try {
   const existingCategory = await FoodCategoryModel.findOne({ categoryName });
 
   if (!existingCategory) {
-    res.status(400).send({ message: "Category doesn't exist" });
+    res.status(400).send({ message: "Category does exist" });
   }
 
   await FoodCategoryModel.create(

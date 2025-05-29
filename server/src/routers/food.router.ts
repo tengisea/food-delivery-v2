@@ -4,6 +4,7 @@ import {
   categoryFoodController,
   updateFoodController,
   getFoodController,
+  createFoodController,
 } from "../controllers";
 import { authenticateUser, authorization } from "../middlewares";
 import { UserRoleEnum } from "../models";
@@ -16,6 +17,10 @@ foodRouter.get("/:categoryId", categoryFoodController);
 foodRouter
   .route("/")
   .get(authenticateUser, authorization(UserRoleEnum.ADMIN), getFoodController);
+
+foodRouter
+  .route("/")
+  .post(authenticateUser, authorization(UserRoleEnum.ADMIN), createFoodController);
 
 foodRouter.delete(
   "/:foodId",

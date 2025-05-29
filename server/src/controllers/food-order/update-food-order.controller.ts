@@ -6,17 +6,29 @@ type FoodOrderBody = {
 };
 
 export const updateFoodOrderController = async (req: Request, res: Response) => {
-try{
-  const { status } = req.body as FoodOrderBody;
+  try {
+    const { status } = req.body as FoodOrderBody;
+    const { foodOrderId } = req.params;
 
-  await FoodOrderModelItem.findByIdAndUpdate(req.params.foodOrderId, {
-    status,
-  });
+    if (!foodOrderId) {
+      res.status(400).json({ message: "Food order ID is required" });
+      return; 
+    }
 
-  res.status(201).send({ message: "Success", status });
+    const updatedOrder = await FoodOrderModelItem.findByIdAndUpdate(
+      foodOrderId,
+      { status },
+      { new: true }
+    );
 
-} catch (error) {
-    console.error("Error during food-order:", error);
+    if (!updatedOrder) {
+      res.status(404).json({ message: "Food order not found" });
+      return;
+    }
+
+    res.status(200).json({ message: "Success", order: updatedOrder });
+  } catch (error) {
+    console.error("Error during food-order update:", error);
 
     res.status(500).json({
       message: "Internal server error",
@@ -24,3 +36,4 @@ try{
     });
   }
 };
+
