@@ -10,13 +10,12 @@ import { UserRoleEnum } from "../models";
 
 export const foodOrderRouter = Router();
 
-foodOrderRouter.route("/").post(foodOrderController)
-
 foodOrderRouter
   .route("/")
+  .post(foodOrderController)
   .get(
-    // authenticateUser,
-    // authorization(UserRoleEnum.ADMIN),
+    authenticateUser,
+    authorization(UserRoleEnum.ADMIN),
     getAllOrdersController
   );
 

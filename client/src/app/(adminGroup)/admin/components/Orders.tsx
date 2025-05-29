@@ -6,6 +6,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { Badge, Button, Checkbox } from "@/components/ui";
 import { DatePickerWithRange } from "./DateRangePicker";
 import { DropdownMenuRadioGroupDemo } from "./DropDownFood";
+import { ChangeDeliveryModal } from "./ChangeStatus";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -17,16 +18,14 @@ export const Orders = () => {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
   const token = localStorage.getItem("token") || "";
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, error, isLoading } = useSWR(
     `${process.env.BACKEND}/food-order`,
     fetcher
   );
 
-  console.log(data);
-  
-
-  const filteredData = useMemo(() => {
+   const filteredData = useMemo(() => {
     if (!data?.allOrders) return [];
 
     let filteredOrders = data.allOrders;
@@ -64,26 +63,46 @@ export const Orders = () => {
     try {
       await Promise.all(
         selectedOrderIds.map(async (id) => {
-          await fetch(`${process.env.BACKEND}/food-order/${id}/change-status`, {
-            method: "PATCH", // эсвэл POST
+          await fetch(`${process.env.BACKEND}/food-order/${id}`, {
+            method: "PATCH", 
             headers: {
-              "Authorization": token,
+              "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ status: "Delivered" }), // эсвэл шинэ төлөв
+            body: JSON.stringify({ status: "Delivered" }),
           });
         })
       );
 
-      // Optionally: refresh data
-      // mutate(`${process.env.BACKEND}/food-order`);
-      setSelectedOrderIds([]); // Reset after update
+      setSelectedOrderIds([]); 
       alert("Delivery status updated!");
     } catch (error) {
       console.error(error);
       alert("Алдаа гарлаа.");
     }
   };
-  
+
+  const handleBulkStatusChange = async (newStatus: string) => {
+    try {
+      await Promise.all(
+        selectedOrderIds.map(async (id) => {
+          await fetch(`${process.env.BACKEND}/food-order/${id}/change-status`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: newStatus }),
+          });
+        })
+      );
+      alert("Status updated!");
+      setSelectedOrderIds([]);
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update.");
+    }
+  };
 
   return (
     <div className="">
@@ -94,10 +113,16 @@ export const Orders = () => {
             setStartDate={setStartDate}
             setEndDate={setEndDate}
           />
-          <Button className="" onClick={handleChangeDeliveryState}>
+          <Button onClick={() => setIsModalOpen(true)}>
             Change delivery state
-            <Badge variant="secondary"> 2</Badge>
+            <Badge variant="secondary">{selectedOrderIds.length}</Badge>
           </Button>
+          <ChangeDeliveryModal
+            open={isModalOpen}
+            onOpenChange={setIsModalOpen}
+            onSave={handleBulkStatusChange}
+            onChangeDeliveryState={handleChangeDeliveryState}
+          />
         </div>
       </header>
       <table className="table-auto border-collapse border border-gray-400 flex flex-col">
@@ -170,7 +195,9 @@ export const Orders = () => {
               </td>
               <td className=" px-4 w-32 text-[#71717A]">{order.totalPrice}</td>
               <td className=" px-4 py-2 w-45.5 font-semibold">
-                <button className="flex items-center px-2.5 gap-2.5 rounded-2xl border-[#ef4444] border-2">
+                <button
+                  className="flex items-center px-2.5 gap-2.5 rounded-2xl border-[#ef4444] border-2"
+                  onClick={() => setIsModalOpen(true)}>
                   {order.status} <ChevronsUpDown size={16} />
                 </button>
               </td>

@@ -1,25 +1,20 @@
 import { Request, Response } from "express";
 import { FoodModel } from "../../models";
 
-type FoodBody = {
-  foodName: string;
-  price: number;
-  image: string;
-  ingredients: string;
-  category: string;
-};
-
 export const getFoodController = async (req: Request, res: Response) => {
   try {
-    const body = req.body as FoodBody;
+    const { limit = 20, page = 0 } = req.query;
 
-    const sortedFoods = await FoodModel.findOne({
-      category: req.params.categoryId,
-    });
+    const allFoods = await FoodModel.find()
+      .populate("category", "categoryName")
+      .limit(Number(limit))
+      .skip(Number(+limit * +page));
 
-    res.status(201).send({ message: "Success", sortedFoods });
+    const total = await FoodModel.countDocuments();
+
+    res.status(200).send({ allFoods, total });
   } catch (error) {
-    console.error("Error during adding category:", error);
+    console.error("Error during reading category:", error);
 
     res.status(500).json({
       message: "Internal server error",

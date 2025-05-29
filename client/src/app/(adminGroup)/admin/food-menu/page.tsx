@@ -1,10 +1,17 @@
 import React from 'react'
-import { NavBar } from '../components'
+import { FoodMenu, NavBar } from '../components'
 
 const FoodMenuAdmin = () => {
   return (
-    <div><NavBar/></div>
-  )
+    <div className="flex">
+      <div>
+        <NavBar />
+      </div>
+      <div className="bg-[#F4F4F5]">
+        <FoodMenu />
+      </div>
+    </div>
+  );
 }
 
 export default FoodMenuAdmin

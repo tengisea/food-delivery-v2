@@ -1,5 +1,7 @@
+"use client";
 import { NomLogo } from "@/components/Button/NomLogo";
-import { LayoutDashboard, Settings, Truck } from "lucide-react";
+import { LayoutDashboard, Truck } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const NavBar = () => {
   return (
@@ -9,17 +11,41 @@ export const NavBar = () => {
       </div>
 
       <div className="flex flex-col gap-6 ">
-        <button className="flex gap-2.5 py-2 px-6 items-center border-1-white rounded-4xl h-6">
-          <LayoutDashboard color="#000000" strokeWidth={1} size="22" />
+        <button
+          className={cn(
+            "flex gap-2.5 py-2 px-6 items-center border-1-white rounded-4xl h-6",
+            window.location.pathname === "/admin/food-menu" &&
+              "bg-black text-white flex gap-2.5 py-4 px-6 items-center border-1-white rounded-4xl h-6"
+          )}
+          onClick={() => (location.href = "/admin/food-menu")}>
+          <LayoutDashboard
+            className={cn(
+              "text-[#000000]",
+              window.location.pathname === "/admin/food-menu"
+                ? "text-[#FFFFFF]"
+                : ""
+            )}
+            strokeWidth={1}
+            size="22"
+          />
           Food menu
         </button>
-        <button className="flex gap-2.5 py-2 px-6 bg-black text-white items-center border-1-black rounded-4xl">
-          <Truck color="#fff" strokeWidth={1} size="22" />
+        <button
+          className={cn(
+            "flex gap-2.5 py-2 px-6 items-center border-1-white rounded-4xl h-6",
+            window.location.pathname === "/admin" &&
+              "bg-black text-white flex gap-2.5 py-4 px-6 items-center border-1-white rounded-4xl h-6"
+          )}
+          onClick={() => (window.location.href = "/admin")}>
+          <Truck
+            className={cn(
+              "text-[#000000]",
+              window.location.pathname === "/admin" ? "text-[#ffffff]" : ""
+            )}
+            strokeWidth={1}
+            size="22"
+          />
           Orders
-        </button>
-        <button className="flex gap-2.5 py-2 px-6 items-center border-1-white rounded-4xl">
-          <Settings color="#000000" strokeWidth={1} size="22" />
-          Settings
         </button>
       </div>
     </nav>

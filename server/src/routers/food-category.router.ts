@@ -4,18 +4,20 @@ import {
   deleteFoodCategoryController,
   foodCategoryController,
   updateFoodCategoryController,
+  postFoodCategoryController
 } from "../controllers";
 import { authenticateUser, authorization } from "../middlewares";
 
 export const foodCategoryRouter = Router();
 
 foodCategoryRouter.route("/").get(foodCategoryController);
+
 foodCategoryRouter
   .route("/")
   .post(
     authenticateUser,
     authorization(UserRoleEnum.ADMIN),
-    foodCategoryController
+    postFoodCategoryController
   );
 foodCategoryRouter.patch(
   "/:foodCategoryId",

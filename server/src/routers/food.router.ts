@@ -1,8 +1,9 @@
 import { Router } from "express";
 import {
   deleteFoodController,
-  foodController,
-  updateFoodController,getFoodController
+  categoryFoodController,
+  updateFoodController,
+  getFoodController,
 } from "../controllers";
 import { authenticateUser, authorization } from "../middlewares";
 import { UserRoleEnum } from "../models";
@@ -10,11 +11,11 @@ import { UserRoleEnum } from "../models";
 
 export const foodRouter = Router();
 
-foodRouter.get("/:categoryId", getFoodController);
+foodRouter.get("/:categoryId", categoryFoodController);
 
 foodRouter
   .route("/")
-  .get(authenticateUser, authorization(UserRoleEnum.ADMIN), foodController);
+  .get(authenticateUser, authorization(UserRoleEnum.ADMIN), getFoodController);
 
 foodRouter.delete(
   "/:foodId",

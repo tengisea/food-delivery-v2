@@ -22,7 +22,7 @@ export const authenticateUser = async (
     res.status(400).send({
       message: "Unauthorized user, Authorization token is missing.",
     });
-    return
+    return;
   }
 
   const decodedToken = verifyToken(token) as { userId: string };
@@ -43,7 +43,7 @@ export const authenticateUser = async (
     return;
   }
 
-  req.body.user = existingUser
+  req.params.role = existingUser.role;
 
   next();
 };
